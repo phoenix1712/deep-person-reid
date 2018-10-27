@@ -1,6 +1,8 @@
 from __future__ import print_function
 from __future__ import division
+from functools import partial
 
+import pickle
 import os
 import sys
 import time
@@ -195,7 +197,9 @@ def main():
         print("Loaded pretrained weights from '{}'".format(args.load_weights))
 
     if args.resume and check_isfile(args.resume):
-        checkpoint = torch.load(args.resume)
+        pickle.load = partial(pickle.load, encoding="latin1")
+        pickle.Unpickler = partial(pickle.Unpickler, encoding="latin1")
+        checkpoint = torch.load(args.resume, pickle_module=pickle)
         model.load_state_dict(checkpoint['state_dict'])
         args.start_epoch = checkpoint['epoch'] + 1
         best_rank1 = checkpoint['rank1']
