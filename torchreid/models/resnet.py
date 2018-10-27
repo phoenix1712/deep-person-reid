@@ -14,7 +14,7 @@ class ResNet50(nn.Module):
     def __init__(self, num_classes, loss={'xent'}, **kwargs):
         super(ResNet50, self).__init__()
         self.loss = loss
-        resnet50 = torchvision.models.resnet50()
+        resnet50 = torchvision.models.resnet50(pretrained=True)
         self.base = nn.Sequential(*list(resnet50.children())[:-2])
         self.classifier = nn.Linear(2048, num_classes)
         self.feat_dim = 2048
